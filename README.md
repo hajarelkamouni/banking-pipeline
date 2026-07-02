@@ -1,11 +1,11 @@
 
 # 🕵️ Fraud Pipeline
 
-End-to-end ETL pipeline for credit card fraud analysis  built with **PySpark**, **Apache Airflow**, **PostgreSQL**, and managed with **uv**.
+End-to-end ETL pipeline for credit card fraud analysis - built with **PySpark**, **Apache Airflow**, **PostgreSQL**, and managed with **uv**.
 
 ## Overview
 
-This project implements a daily scheduled data engineering pipeline that ingests raw transaction data, cleans and enriches it with PySpark, computes fraud-related KPIs, and loads them into PostgreSQL for downstream analysis (e.g. Power BI).
+This project implements a daily-scheduled data engineering pipeline that ingests raw transaction data, cleans and enriches it with PySpark, computes fraud-related KPIs, and loads them into PostgreSQL for downstream analysis (e.g. Power BI).
 
 The pipeline covers the full data lifecycle:
 
@@ -19,20 +19,20 @@ data/raw/
          │
          ▼
   ┌───────────────────┐
-  │  ingestion.py     │  PySpark — dropna/dedupe, filter amount > 0,
+  │  ingestion.py     │  PySpark - dropna/dedupe, filter amount > 0,
   │                   │  derive trans_hour + amount_category
   │                   │  → output/transactions_clean/ (Parquet)
   └────────┬──────────┘
            │
            ▼
   ┌───────────────────┐
-  │  transform.py     │  PySpark — compute 5 KPI tables
+  │  transform.py     │  PySpark - compute 5 KPI tables
   │                   │  → output/kpis/<kpi_name>/ (Parquet)
   └────────┬──────────┘
            │
            ▼
   ┌───────────────────┐
-  │    load.py        │  psycopg2 — CREATE TABLE IF NOT EXISTS
+  │    load.py        │  psycopg2 - CREATE TABLE IF NOT EXISTS
   │                   │  + INSERT ... ON CONFLICT DO UPDATE / TRUNCATE+INSERT
   │                   │  → PostgreSQL (banking database)
   └───────────────────┘
@@ -55,18 +55,18 @@ The pipeline expects a CSV with (at least) these columns:
 This matches the schema of the [Credit Card Fraud Detection dataset (ULB)](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). Place your CSV at `data/raw/fraudTrain.csv` (path configurable via `RAW_DATA_PATH`).
 
 During ingestion, two columns are derived:
-- `trans_hour` — hour of day extracted from `trans_time`
-- `amount_category` — `micro` (<10), `small` (<100), `medium` (<1000), `large` (≥1000)
+- `trans_hour` - hour of day extracted from `trans_time`
+- `amount_category` - `micro` (<10), `small` (<100), `medium` (<1000), `large` (≥1000)
 
 ## KPIs Produced
 
 | Table | Key | Columns | Description |
 |---|---|---|---|
-| `kpi_global` | — | nb_transactions, total_amount, avg_amount, max_amount, nb_fraud, fraud_rate_pct | Overall summary metrics |
+| `kpi_global` | - | nb_transactions, total_amount, avg_amount, max_amount, nb_fraud, fraud_rate_pct | Overall summary metrics |
 | `kpi_by_hour` | `trans_hour` | trans_hour, nb_transactions, total_amount, avg_amount, nb_fraud, fraud_rate_pct | Transaction volume and fraud rate by hour of day |
 | `kpi_by_amount_category` | `amount_category` | amount_category, nb_transactions, total_amount, avg_amount, nb_fraud, fraud_rate_pct | Volume and fraud rate by amount bucket |
 | `kpi_fraud_vs_normal` | `is_fraud` | is_fraud, nb_transactions, total_amount, avg_amount, min_amount, max_amount | Aggregated comparison: fraud vs normal transactions |
-| `kpi_top_fraud_amounts` | — | trans_time, amount, amount_category, trans_hour | Top 20 highest-value fraudulent transactions |
+| `kpi_top_fraud_amounts` | - | trans_time, amount, amount_category, trans_hour | Top 20 highest-value fraudulent transactions |
 
 Tables with a key column are upserted (`ON CONFLICT ... DO UPDATE`); tables without one are truncated and reloaded on each run.
 
@@ -87,12 +87,12 @@ Tables with a key column are upserted (`ON CONFLICT ... DO UPDATE`); tables with
 ```
 Fraud_pipeline/
 ├── dags/
-│   └── pipeline_dag.py       # Airflow DAG — orchestrates the full pipeline
+│   └── pipeline_dag.py       # Airflow DAG - orchestrates the full pipeline
 ├── scripts/
 │   ├── __init__.py
-│   ├── ingestion.py          # PySpark — read CSV, clean, enrich, save as Parquet
-│   ├── transform.py          # PySpark — compute the 5 KPI tables
-│   └── load.py               # psycopg2 — create tables & load KPIs into PostgreSQL
+│   ├── ingestion.py          # PySpark - read CSV, clean, enrich, save as Parquet
+│   ├── transform.py          # PySpark - compute the 5 KPI tables
+│   └── load.py               # psycopg2 - create tables & load KPIs into PostgreSQL
 ├── sql/
 │   └── init_db.sql           # Creates the "banking" database
 ├── data/
@@ -116,7 +116,7 @@ Fraud_pipeline/
 ### Prerequisites
 
 - Docker Desktop installed and running
-- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (only needed for local/non-Docker runs)
 
 ### 1. Clone the repository
 
