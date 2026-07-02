@@ -1,11 +1,11 @@
 
 # 🕵️ Fraud Pipeline
 
-End-to-end ETL pipeline for credit card fraud analysis — built with **PySpark**, **Apache Airflow**, **PostgreSQL**, and managed with **uv**.
+End-to-end ETL pipeline for credit card fraud analysis  built with **PySpark**, **Apache Airflow**, **PostgreSQL**, and managed with **uv**.
 
 ## Overview
 
-This project implements a daily-scheduled data engineering pipeline that ingests raw transaction data, cleans and enriches it with PySpark, computes fraud-related KPIs, and loads them into PostgreSQL for downstream analysis (e.g. Power BI).
+This project implements a daily scheduled data engineering pipeline that ingests raw transaction data, cleans and enriches it with PySpark, computes fraud-related KPIs, and loads them into PostgreSQL for downstream analysis (e.g. Power BI).
 
 The pipeline covers the full data lifecycle:
 
@@ -116,7 +116,7 @@ Fraud_pipeline/
 ### Prerequisites
 
 - Docker Desktop installed and running
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) (only needed for local/non-Docker runs)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### 1. Clone the repository
 
@@ -215,9 +215,3 @@ Connect Power BI to PostgreSQL:
 | `AIRFLOW_UID` | `50000` | UID used by Airflow containers |
 | `RAW_DATA_PATH` | `/opt/airflow/data/raw/fraudTrain.csv` | Path to the source CSV |
 | `OUTPUT_PATH` | `/opt/airflow/output` | Base path for Parquet outputs |
-
-
-
-## Author
-
-**Hajar Elkamouni** — Data Engineer
