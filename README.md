@@ -221,5 +221,3 @@ Connect Power BI to PostgreSQL:
 ## Author
 
 **Hajar Elkamouni** — Data Engineer
-
-[LinkedIn](#) · [GitHub](#)
